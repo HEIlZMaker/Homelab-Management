@@ -1,0 +1,11 @@
+services:
+  homer:
+    image: b4bz/homer
+    container_name: homer
+    volumes:
+      - /docker/appdata/homerassets:/www/assets
+    ports:
+      - 9001:8080
+    user: 1000:1000 # default
+    environment:
+      - INIT_ASSETS=1 # default
