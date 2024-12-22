@@ -6,7 +6,6 @@ services:
   db:
     image: postgres:15-alpine
     restart: always
-    hostname: 'nextcloud-db'
     container_name: 'nextcloud-db'
     volumes:
       - db:/docker/appdata/postgresql/nextcloud-data
@@ -17,13 +16,13 @@ services:
       
   app:
     container_name: 'nextcloud-app'
-    hostname: 'nextcloud-app'
     image: nextcloud:production-apache
     restart: always
     ports:
-      - 8080:80
+      - 8081:80
     depends_on:
       - db
+      - redis
     volumes:
       - nextcloud:/docker/appdata/nextcloud-app
     environment:
@@ -31,3 +30,8 @@ services:
       - POSTGRES_USER=nextcloud
       - POSTGRES_DB=nextcloud
       - POSTGRES_HOST=db
+
+  redis:
+    container_name: 'redis'
+    image: redis:8.0-M02-alpine
+    restart: always
